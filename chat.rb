@@ -4,20 +4,20 @@ require "dotenv/load"
 client = OpenAI::Client.new(access_token: ENV.fetch("OPENAI_API_KEY"))
 
 puts "Hello! How can I help you today?"
-50.times {print '-'} 
+puts "-"*50
 
-user_messege = gets.chomp
+user_message = gets.chomp
 
 
 # Prepare an Array of previous messages
 message_list = [
   {
-    "role" => "system",
-    "content" => "You are a helpful assistant."
+    :role => "system",
+    :content => "You are a helpful assistant."
   },
   {
-    "role" => "user",
-    "content" => "Hello! What are the best spots for pizza in Chicago?"
+    :role => "user",
+    :content => user_message
   }
 ]
 
@@ -29,4 +29,7 @@ api_response = client.chat(
   }
 )
 
-pp api_response
+nice_response = api_response.fetch("choices").at(0).fetch("message").fetch("content")
+
+puts nice_response
+puts "-" * 50
